@@ -1,0 +1,3 @@
+
+identities,boolean,true,true,can request identities,user is able to request data
+allidentities,boolean,true,true,can request all identities,user is able to request data

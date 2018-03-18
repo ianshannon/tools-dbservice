@@ -1,0 +1,9 @@
+= OpenBet CoreSecurity Identity Service API
+Version: {project-version}
+
+:revnumber: {project-version}
+
+include::{generated}/overview.adoc[]
+include::{generated}/paths.adoc[]
+include::{generated}/definitions.adoc[]
+include::{generated}/security.adoc[]

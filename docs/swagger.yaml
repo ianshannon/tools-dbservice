@@ -1,0 +1,151 @@
+swagger: "2.0"
+info:
+  description: |
+    This service provides a query service for databases.
+  version: "1.0"
+  title: "Tools Query Service"
+  contact:
+    email: "nyx20-all@openbet.com"
+host: "localhost:9589"
+basePath: "/identity/v1.0"
+schemes:
+- "http"
+- "https"
+parameters:
+  id:
+    name: id
+    in: path
+    description: "ID to retrieve identity details."
+    required: true
+    type: string
+
+definitions:
+  Identity:
+    description: "The identity details"
+    type: object
+    required:
+    - id
+    - username
+    - active
+    - editable
+    properties:
+      id:
+        type: string
+        example: "12989"
+      username:
+        type: string
+        example: "BigFreddy"
+      firstname:
+        type: string
+        example: "Frederick"
+      lastname:
+        type: string
+        example: "Bloggs"
+      email:
+        type: string
+        example: "bouncer@security.com"
+      position:
+        type: string
+        example: "System Admin"
+      active:
+        type: boolean
+        example: true
+      editable:
+        type: boolean
+        example: false
+
+  Identities:
+    properties:
+      identities:
+        description: "Array of Identities"
+        type: array
+        items:
+          $ref: '#/definitions/IdItem'
+
+  IdItem:
+    type: object
+    required:
+    - id
+    - username
+    properties:
+      id:
+        type: string
+        example: "12989"
+      username:
+        type: string
+        example: "BigFreddy"
+
+paths:
+  /:
+    get:
+      summary: "API documentation"
+      description: "This endpoint provides this API documentation."
+      produces:
+      - "application/html"
+      responses:
+        200:
+          description: "successful operation"
+  /metrics:
+    get:
+      summary: "Metrics data about the service"
+      description: "This endpoint exposes certain metrics data for blackbox and whitebox monitoring. This metrics data is suitable for consumption via Prometheus."
+      produces:
+      - "text/plain"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: string
+            example: "http_requests_total{method=GET} 5.0
+              http_requests_total{method=POST} 12.0
+              response_status_count{status_code=200,reason=OK} 3.0
+              response_status_count{status_code=500,reason=Internal Server Error} 1.0"
+
+  /identities:
+    get:
+      summary: "Get list of identities"
+      description: "This endpoint Returns list of Identities. The id can then be used with the /identity/{id} endpoint to retrieve full details"
+      operationId: "getIdentities"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: '#/definitions/Identities'
+        401:
+          description: "Unauthorised"
+
+  /identities/username:
+    get:
+      summary: "Get list of usernames along with ids"
+      description: "This endpoint Returns list of usernames along with ids. The id can then be used with the /identity/{id} endpoint to retrieve full details"
+      operationId: "getUserNames"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: '#/definitions/Identities'
+        401:
+          description: "Unauthorised"
+
+  /identities/{id}:
+    get:
+      summary: "Get identity details for supplied id"
+      description: "This endpoint returns identity details for provided id as path parameter"
+      operationId: "getIdentity"
+      produces:
+      - "application/json"
+      parameters:
+        $ref: '#/parameters/id'
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: '#/definitions/Identity'
+        401:
+          description: "Unauthorised"
+        404:
+          description: "Not Found"

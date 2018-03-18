@@ -1,0 +1,19 @@
+#!/bin/sh
+
+SERVER_HTTP_HOST=${SERVER_HTTP_HOST:-$HOSTNAME}
+
+cat <<END >/tmp/application_docker.conf
+
+dbservice {
+  http {
+    host = "$SERVER_HTTP_HOST"
+    port = 9816
+  }
+}
+
+END
+
+JAVA_OPTS="$JAVA_OPTS -Dconfig.file=tmp/application_docker.conf $1 $2"
+export JAVA_OPTS
+
+exec java $JAVA_OPTS -jar target/tools-dbservice-1.0-SNAPSHOT-bundle.jar

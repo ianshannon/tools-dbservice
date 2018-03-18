@@ -1,0 +1,52 @@
+<configuration scan="true" scanPeriod="5 seconds">
+
+    <appender name = "STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %highlight(%.-1level) [%10.10replace(%thread){[a-z],''}] %highlight(%msg) %n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name = "FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                /opt/openbet/logs/db-service/identity-VERBOSE.%d{yyyyMMdd}.log.gz
+            </fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS}\t[%thread]\t%-5level %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="RestAPI_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                /opt/openbet/logs/db-service/identity-REST.%d{yyyyMMdd}.log.gz
+            </fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS}\t[%thread]\t%-5level %msg%n</pattern>
+        </encoder>
+        <filter class="com.openbet.backoffice.tools.restapi.logging.RestApiFilter" />
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref = "STDOUT" />
+        <appender-ref ref = "RestAPI_FILE" />
+        <appender-ref ref = "FILE" />
+    </root>
+
+
+    <logger name = "akka.actor" level = "DEBUG" >
+        <appender-ref ref = "FILE" />
+        <appender-ref ref = "RestAPI_FILE" />
+        <appender-ref ref = "STDOUT" />
+    </logger>
+
+    <!-- control logging for Kafka libs use WARN in live - set to INFO if needed (DEBUG - produces many messages) -->
+    <Logger name = "org.apache.kafka" level="WARN"/>
+    <Logger name = "org.apache.kafka.common" level="WARN"/>
+    <!--logback Logging-->
+    <Logger name = "ch.qos.logback.core" level="WARN"/>
+
+</configuration>
+
