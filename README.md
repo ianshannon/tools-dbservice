@@ -2,7 +2,7 @@ Tools Database Service
 ======================
 
 ### Summary ###
-The db service acts published data from db as csv, tsv, html or json.
+The db service publishes data from db as csv, tsv, html or json via rest.
 
 Document Link:
 

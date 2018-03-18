@@ -26,7 +26,7 @@
         <encoder>
             <pattern>%d{HH:mm:ss.SSS}\t[%thread]\t%-5level %msg%n</pattern>
         </encoder>
-        <filter class="com.openbet.backoffice.tools.restapi.logging.RestApiFilter" />
+        <filter class="com.q4.backoffice.tools.restapi.logging.RestApiFilter" />
     </appender>
 
     <root level="DEBUG">
